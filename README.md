@@ -81,6 +81,39 @@ Returns an object defined as follows:
 }
 ```
 
+```getLoanOfferInitialData(address loan) returns(LoanData)```
+
+Fetches the initial configuration of the loan offer specified by the input parameters.
+
+Returns an object defined as follows:
+
+```
+       {
+          "name": "minimumMediumAmount", //maximum amount of the offer
+          "type": "uint256"
+        },
+        {
+          "name": "maximumMediumAmount", //minimum amount of the offer, if supported
+          "type": "uint256"
+        },
+        {
+          "name": "minimumLoanDuration",
+          "type": "uint256"
+        },
+        {
+          "name": "maximumLoanDuration",
+          "type": "uint256"
+        },
+        {
+          "name": "acceptedCollaterals", //bytes32 packing all the data for the supported collaterals
+          "type": "bytes32[5]"
+        },
+        {
+          "name": "creationTime",
+          "type": "uint256"
+        }
+    ```
+
 
 The following Enumeratives are used in the ```getLoanData()``` and ```getLoanOfferInitialData()``` return values:
 
@@ -115,4 +148,79 @@ enum CollateralType {
     BTC = 2
 }
 ```
+
+## Code example: fetch the data of loan offers and loan requests
+
+
+TBD
+
+
+
+
+
+## Fetch the data using the Aave API
+
+
+Given the fairly complex structure of the ETHLend marketplace, fetching and processing the data needed to analyze the usage the platform can be problematic. To ease the job of integrators and devs, we developed an API server that will provide the information in a simply and human readable way.
+
+### Description of the endpoints
+
+```https://api.aave.com/request```
+
+returns an array containing the address of all the loan requests on the platform. Equivalent of the ```getLoanRequests()``` method in the Loan Data Controller
+
+
+```https://api.aave.com/request/getone/:address```
+
+returns the data related to a specific loan request (defined by the :address parameter). Data is already parsed to be human readable (amounts in the proper unit of currency - currency addresses converted to the equivalent token symbol - durations converted to days). Equivalent of the ```getLoanData()``` method in the Loan Data Controller
+
+
+```https://api.aave.com/offer```
+
+returns an array containing the address of all the loan offers on the platform. Equivalent of the ```getLoanOffers()``` method in the Loan Data Controller
+
+
+```https://api.aave.com/offer/getone/:address```
+
+returns the data related to a specific loan offer (defined by the :address parameter). Data is already parsed to be human readable (amounts in the proper unit of currency - currency addresses converted to the equivalent token symbol - durations converted to days). Merges the information of the ```getLoanData()``` method and the ```getLoanOfferInitialData()``` in the Loan Data Controller.
+
+
+## Fetch statistics using the Aave API
+
+
+```https://api.aave.com/stats/locked``` 
+
+
+returns the total amount in USD of the assets locked as collateral/loan currency (for the offers) within the ETHLend smart contracts.
+
+### How is the statistic calculated
+
+The total worth in USD of all the collaterals stored on the platform, for all the loans that are in the states State.Funding and State.WaitingForPayback, is calculated, plus the loan pricipal that are stored in the loan offers in state State.WaitingForBorrower.
+
+
+
+```https://api.aave.com/stats/totalborrows``` 
+
+
+returns the total amount in USD of the assets that have been borrowed within the ETHLend smart contracts.
+
+### How is the statistic calculated
+
+The total worth in USD of all the loan principals, for all the loans that are in the states State.WaitingForPayback is calculated.
+
+
+```https://api.aave.com/stats/activeloans``` 
+
+
+### How is the statistic calculated
+
+Count of all the loans that are in State.WaitingForBorrower, State.Funding, or State.WaitingForPayback.
+
+
+
+
+
+
+
+
 
