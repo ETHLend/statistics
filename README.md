@@ -1,11 +1,11 @@
 # statistics
 This repository contains the ABI interfaces to fetch data from the ETHLend smart contracts and the Aave API endpoints.
 
-##Fetching data through the smart contract interfaces
+## Fetching data through the smart contract interfaces
 
 The ETHLend smart contract infrastructure references one specific contract, called the Loan Data Controller, that acts as a container for all the data regarding the onchain activity of the users. In the contract all the information of the loans created on the platform is stored, and from that it's possible to calculate interesting statistics like the users activity, amount of assets locked and so on. The following document describes how to fetch data from the Loan Data Controller and to perform proper conversion. We also provide information about the API endpoints for statistics that do the heavy lifting for integrators and allows to fetch data quickly and easily.
 
-###Loan Data Controller methods
+### Loan Data Controller methods
 
 Address of the Loan Data Controller
 
@@ -18,7 +18,7 @@ Kovan testnet:
 0xec21584a997e5ff90becba025a467770e706bda2
 
 
-###Description of the methods of the Loan Data Controller
+### Description of the methods of the Loan Data Controller
 
 ```getLoanRequests() returns(address[])```
 
@@ -31,7 +31,9 @@ returns the list of all the loan offers created on the platform
 
 
 
-```getLoanData() returns(LoanData)```
+```getLoanData(address loan) returns(LoanData)```
+
+Fetches the basic data of either loan requests or loan offers. Receives the address of the loan as input parameter.
 
 Returns an object defined as follows:
 
@@ -80,11 +82,8 @@ Returns an object defined as follows:
 ```
 
 
+The following Enumeratives are used in the ```getLoanData()``` and ```getLoanOfferInitialData()``` return values:
 
-
-``` 
-
-The following Enumeratives are used in the ```getLoanData()``` return value:
 
 ```
 enum State {
