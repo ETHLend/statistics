@@ -112,7 +112,7 @@ Returns an object defined as follows:
           "name": "creationTime",
           "type": "uint256"
         }
-    ```
+```
 
 
 The following Enumeratives are used in the ```getLoanData()``` and ```getLoanOfferInitialData()``` return values:
